@@ -1,0 +1,17 @@
+BOLSO RETRO — PASSO A PASSO PARA GERAR APK
+
+1. EXTRAIA este arquivo ZIP no computador.
+2. ABRA seu novo repositório no GitHub.
+3. Clique em Add file > Upload files.
+4. Envie todos os arquivos e pastas EXTRAIDOS, inclusive .github.
+   (Nao envie apenas o arquivo ZIP — GitHub nao o extrai.)
+5. Confirme que existe .github/workflows/build-apk.yml na raiz do repositorio.
+6. Faça Commit changes.
+7. Em Actions > Gerar APK do Bolso Retro, abra a execucao.
+8. Ao aparecer o sinal verde, baixe BolsoRetro-APK.
+9. Extraia BolsoRetro.apk de dentro do arquivo de artefato.
+10. Abra BolsoRetro.apk no telefone Android.
+
+Observacao: nao ha APK precompilado neste ZIP.
+Para executar ROMs pode ser necessario ter internet, pois o motor EmulatorJS
+ainda nao foi incluído para uso totalmente offline.

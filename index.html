@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1222" />
+  <meta name="description" content="Sua biblioteca pessoal de jogos Game Boy Advance e Nintendo DS, diretamente no navegador." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+  <title>Bolso Retro · Biblioteca</title>
+  <script defer src="./db.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <div class="brand"><div class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="7" stroke="currentColor" stroke-width="2"/><rect x="8" y="9" width="16" height="9" rx="2" fill="currentColor" opacity=".22"/><path d="M10 22h7m-3.5-3.5v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="21" r="1.5" fill="currentColor"/><circle cx="25" cy="24" r="1.5" fill="currentColor"/></svg></div><div><strong>BOLSO<span>RETRO</span></strong><small>PLAY ANYWHERE</small></div></div>
+      <div class="section-label">NAVEGAR</div>
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="library" type="button"><span class="nav-icon">▦</span><span>Biblioteca</span></button>
+        <button class="nav-item" data-view="favorites" type="button"><span class="nav-icon">♡</span><span>Favoritos</span></button>
+        <button class="nav-item" data-view="settings" type="button"><span class="nav-icon">⚙</span><span>Ajustes</span></button>
+      </nav>
+      <div class="side-bottom"><div class="side-bottom-dot"></div><div><strong>SEU ESPAÇO PESSOAL</strong><span>Jogos salvos neste dispositivo</span></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div class="breadcrumb">HOME <span>/</span> <strong id="pageCrumb">BIBLIOTECA</strong></div><div class="top-actions"><span id="connectionBadge" class="online-badge">● Verificando</span><button id="installBtn" class="install-button" hidden type="button">↓ Instalar app</button><span class="avatar" aria-label="Perfil pessoal">BR</span></div></header>
+      <div id="libraryView" class="view active">
+        <section class="intro"><div><div class="eyebrow"><span class="star">✦</span> O SEU UNIVERSO DE JOGOS</div><h1>Sua próxima aventura<br/><span>começa aqui.</span></h1><p>GBA e Nintendo DS em um só lugar. Sem contas, sem complicação.</p></div><div class="intro-lines" aria-hidden="true"><div class="orb orb1"></div><div class="orb orb2"></div></div></section>
+        <div class="stats-row"><div class="stat"><span class="stat-ico purple">▦</span><div><strong id="statGames">0</strong><small>JOGOS NA BIBLIOTECA</small></div></div><div class="stat"><span class="stat-ico green">◉</span><div><strong id="statGba">0</strong><small>GAME BOY ADVANCE</small></div></div><div class="stat"><span class="stat-ico blue">▥</span><div><strong id="statNds">0</strong><small>NINTENDO DS</small></div></div></div>
+        <section id="resumeSection" class="resume-section" hidden><div class="section-title-row"><h2>Continue de onde parou</h2><span>ÚLTIMO JOGADO</span></div><button id="resumeCard" class="resume-card" type="button"><div class="resume-copy"><span class="resume-kicker">↗ CONTINUAR JOGANDO</span><strong id="resumeName">Jogo</strong><small id="resumeSystem">Game Boy Advance</small><span class="resume-play">▶ Retomar jogo <span>→</span></span></div><div class="resume-art" aria-hidden="true"><div class="mini-device"><div class="mini-display"><span>▶</span></div><div class="mini-pads">✚ <span>••</span></div></div></div></button></section>
+        <section class="collection-section"><div class="section-title-row section-head"><div><h2>Sua coleção <span id="libraryCount" class="count-pill">0</span></h2><p>Seus jogos, sempre por perto.</p></div><button id="importTop" class="primary-button" type="button"><span>＋</span> Adicionar jogos</button></div>
+          <div class="toolbar"><div class="tabs" role="group" aria-label="Filtrar plataforma"><button class="tab active" data-system="all" type="button">Todos</button><button class="tab" data-system="gba" type="button">GBA</button><button class="tab" data-system="nds" type="button">Nintendo DS</button></div><div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="searchInput" placeholder="Buscar um jogo..." autocomplete="off" aria-label="Buscar jogo" /></div></div>
+          <div id="gamesGrid" class="games-grid" aria-live="polite"></div>
+          <div id="emptyState" class="empty-state" hidden><div class="empty-device" aria-hidden="true"><div class="empty-screen"><span>✦</span><div class="screen-grid"></div></div><div class="empty-controls"><span>✚</span><span>● ●</span></div></div><h3 id="emptyTitle">Sua biblioteca começa aqui</h3><p id="emptyMessage">Adicione suas ROMs de Game Boy Advance (.gba) e Nintendo DS (.nds) ou arquivos ZIP compatíveis para começar a jogar.</p><button id="importEmpty" type="button" class="primary-button">＋ Escolher arquivos</button></div>
+        </section>
+      </div>
+      <div id="favoritesView" class="view"><div class="secondary-page-title"><div class="eyebrow">SEUS PREFERIDOS</div><h1>Favoritos <span>♡</span></h1><p>Os jogos que merecem ficar por perto.</p></div><div id="favoritesGrid" class="games-grid"></div><div id="favoritesEmpty" class="secondary-empty" hidden><div class="secondary-empty-icon">♡</div><h3>Nenhum favorito ainda</h3><p>Toque no coração de qualquer jogo para adicioná-lo aqui.</p></div></div>
+      <div id="settingsView" class="view"><div class="secondary-page-title"><div class="eyebrow">PREFERÊNCIAS</div><h1>Seu jeito de <span>jogar.</span></h1><p>Controle sua experiência e os dados locais.</p></div><div class="settings-layout"><div class="settings-panel"><h2>Emulação</h2><p>Escolha o núcleo de Nintendo DS. GBA utiliza mGBA.</p><label for="ndsCore">Núcleo para Nintendo DS</label><select id="ndsCore"><option value="desmume">DeSmuME (padrão, sem BIOS)</option><option value="desmume2015">DeSmuME 2015 (alternativo)</option></select><div class="settings-hint">Dica: se algum jogo apresentar lentidão, experimente o outro núcleo. O desempenho depende do aparelho.</div></div><div class="settings-panel"><h2>Dados e privacidade</h2><p>As ROMs ficam neste aplicativo. Não há conta, sincronização nem envio dos seus jogos.</p><div class="storage-info"><span>Armazenamento estimado</span><strong id="storageUsed">Calculando…</strong></div><div class="storage-bar"><span id="storageFill"></span></div><button id="persistBtn" class="secondary-button" type="button">Proteger armazenamento local</button><div class="settings-hint">Os salvamentos ficam armazenados localmente pelo emulador. Apagar os dados do navegador pode excluir jogos e partidas.</div></div><div class="settings-panel"><h2>Instalação e conexão</h2><p>Instale na tela inicial para uma experiência de aplicativo.</p><button id="installFromSettings" class="secondary-button" type="button">Instalar na tela inicial</button><div class="settings-hint" id="offlineHint">O motor EmulatorJS é carregado da CDN, salvo quando sua distribuição completa foi incluída no APK. Sem os arquivos empacotados, o jogo pode exigir internet mesmo após a primeira execução.</div></div><div class="settings-panel"><h2>Controles e salvamentos</h2><p>Os botões na tela são fornecidos pelo próprio emulador; teclado e alguns controles Bluetooth também funcionam. No DS, toque diretamente na tela inferior.</p><div class="settings-hint">Use a barra de ferramentas dentro do jogo para criar ou carregar save states. Salve antes de sair ou alternar de jogo.</div></div></div><p class="legal-note">Bolso Retro é um aplicativo pessoal independente. Sem ROMs, BIOS ou jogos comerciais incluídos. Use arquivos de jogos e firmware que você tenha direito de utilizar. O núcleo de emulação é fornecido pelo projeto EmulatorJS.</p></div>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="Navegação inferior"><button data-view="library" class="active" type="button"><span>▦</span>Biblioteca</button><button data-view="favorites" type="button"><span>♡</span>Favoritos</button><button data-view="settings" type="button"><span>⚙</span>Ajustes</button></nav>
+  <input id="romInput" type="file" accept=".gba,.nds,.zip,application/zip" multiple hidden />
+  <dialog id="gameDialog" class="modal"><div class="modal-inner"><button id="closeDialog" class="dialog-close" aria-label="Fechar" type="button">✕</button><span class="modal-badge">JOGO</span><h2 id="dialogGameName">Nome</h2><p id="dialogGameSystem">Sistema</p><div class="dialog-actions"><button id="playDialog" class="primary-button" type="button">▶ Jogar agora</button><button id="favDialog" class="secondary-button" type="button">♡ Favoritar</button><button id="removeDialog" class="danger-button" type="button">Excluir da biblioteca</button></div><p class="dialog-note">Os arquivos estão neste dispositivo. A remoção da biblioteca não apaga automaticamente os salvamentos do emulador.</p></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

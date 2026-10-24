@@ -1,0 +1,5 @@
+Coloque AQUI a pasta data/ COMPLETA da distribuição estável do EmulatorJS.
+Os arquivos loader.js e demais dependências precisam estar diretamente em emulator-data/.
+Sem esses arquivos, o APK usa a CDN oficial e necessita internet na primeira execução
+(e nas seguintes quando os recursos não estiverem em cache).
+Website: https://emulatorjs.org/docs/getting-started/

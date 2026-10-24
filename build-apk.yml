@@ -1,0 +1,98 @@
+name: Gerar APK do Bolso Retro
+
+on:
+  workflow_dispatch:
+    inputs:
+      publicar_pagina:
+        description: 'Publicar instalador no GitHub Pages (PUBLICO)'
+        type: boolean
+        required: false
+        default: false
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    name: Compilar APK Android
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Obter o projeto
+        uses: actions/checkout@v4
+
+      - name: Preparar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instalar ferramentas Android atuais
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Instalar Android SDK 35
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v sdkmanager
+          sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0'
+
+      - name: Preparar Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Compilar APK de teste
+        run: gradle --no-daemon --stacktrace assembleDebug
+
+      - name: Criar instalador e calcular SHA-256
+        run: |
+          python3 scripts/preparar_instalador.py \
+            --apk app/build/outputs/apk/debug/app-debug.apk \
+            --output dist/instalador \
+            --version 1.0.0
+          test -s dist/instalador/BolsoRetro.apk
+          sha256sum dist/instalador/BolsoRetro.apk
+
+      - name: Publicar APK como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: BolsoRetro-APK
+          path: dist/instalador/BolsoRetro.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publicar pagina do instalador como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: BolsoRetro-Instalador
+          path: dist/instalador/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Preparar pagina publica (opcional)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publicar_pagina }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/instalador/
+
+  publicar:
+    name: Pagina de instalacao (opcional)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publicar_pagina }}
+    needs: apk
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar em GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
